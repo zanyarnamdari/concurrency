@@ -19,6 +19,7 @@ private UserCompleteProfile composeUserProfile(String userId) {
 ### Step 2: Generating Subtasks
 Within the scope block, various subtasks are created using the fork method to parallelize operations.
 
+```java
 // Inside the scope block
 Subtask<List<Follower>> mostRelevantFollowersTask =
     scope.fork(() -> followersRepository.findFollowersByUserId(userId));
@@ -26,13 +27,17 @@ Subtask<UserFollowersCount> followersCountTask =
     scope.fork(() -> followersRepository.findFollowersCountByUserId(userId));
 Subtask<UserInfo> userInfoTask =
     scope.fork(() -> userInfoRepository.findUserInfoByUserId(userId));
+``` 
 ### Step 3: Ensuring Completion
 To wait for the completion of all tasks, use the join() method on the scope.
+```java
 scope.join();
+``` 
 
 ### Step 4: Retrieving Results
 Once the tasks are completed, retrieve the results to construct the user profile.
 
+```java
 final var userInfo = userInfoTask.get();
 final var mostRelevantFollowers = mostRelevantFollowersTask.get();
 final var rawFollowersCount = followersCountTask.get();
@@ -47,3 +52,4 @@ final var profileResult = new UserCompleteProfile(
 );
 
 return profileResult;
+``` 
