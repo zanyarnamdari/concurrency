@@ -15,6 +15,7 @@ private UserCompleteProfile composeUserProfile(String userId) {
         throw new RuntimeException(e);
     }
 }
+``` 
 ### Step 2: Generating Subtasks
 Within the scope block, various subtasks are created using the fork method to parallelize operations.
 
